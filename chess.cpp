@@ -6,26 +6,26 @@
 #define BLACK 0
 #define WHITE 1
 #define EMPTY 2
-//×ø±êÀà
+//åæ ‡ç±»
 class Point {
 public:
 	int x = -1;
 	int y = -1;
 };
-//²½Àà
+//æ­¥ç±»
 class Step {
 public:
 	Point first;
 	Point second;
 };
 std::vector<std::vector<int>> Board;
-int computerSide = EMPTY;//¼º·½³Ö×ÓÑÕÉ«
-Step step;//¼º·½²½Àà
-std::string Message;//½ÓÊÜÏûÏ¢
-bool start = false;//¶Ô¾Ö¿ªÊ¼±ê¼Ç
+int computerSide = EMPTY;//å·±æ–¹æŒå­é¢œè‰²
+Step step;//å·±æ–¹æ­¥ç±»
+std::string Message;//æ¥å—æ¶ˆæ¯
+bool start = false;//å¯¹å±€å¼€å§‹æ ‡è®°
 int whichStep = 1;
 int DIR[][2] = { 1,0,-1,0,0,1,0,-1,1,1,1,-1,-1,-1,-1,1 };
-//³õÊ¼»¯Board
+//åˆå§‹åŒ–Board
 void iniBoard() {
 	for (unsigned int i = 0; i < Board.size(); i++) {
 		Board[i].clear();
@@ -73,7 +73,7 @@ public:
 		}
 		EveryStep.clear();
 	}
-	//·µ»ØÖµÎªÏÂÁË¼¸´ÎÁË£¬Ò»»ØºÏÁ½·½¸÷ËãÒ»´Î
+	//è¿”å›å€¼ä¸ºä¸‹äº†å‡ æ¬¡äº†ï¼Œä¸€å›åˆä¸¤æ–¹å„ç®—ä¸€æ¬¡
 	int whichGame() {
 		if (BlackStep > (-1 * WhiteStep)) {
 			return -1 * (WhiteStep + 1) + 1;
@@ -82,8 +82,8 @@ public:
 			return -1 * (WhiteStep + 1);
 		}
 	}
-	//µÚ¼¸´ÎÏÂÆåµÄÎ»ÖÃ
-	//·µ»ØÖµÎªcolor·½µÚtimesÏÂ×ÓµÄ×ø±ê£¬x*100+y
+	//ç¬¬å‡ æ¬¡ä¸‹æ£‹çš„ä½ç½®
+	//è¿”å›å€¼ä¸ºcoloræ–¹ç¬¬timesä¸‹å­çš„åæ ‡ï¼Œx*100+y
 	int locOfChess(int color, int times) {
 		if (color == BLACK) {
 			for (unsigned int i = 0; i < EveryStep.size(); i++) {
@@ -106,7 +106,7 @@ public:
 		}
 		return 0;
 	}
-	//¼ÇÂ¼ÏÂ×Ó
+	//è®°å½•ä¸‹å­
 	void playChess(int color, int x, int y) {
 		if (color == BLACK) {
 			EveryStep[x][y] = BlackStep++;
@@ -115,13 +115,13 @@ public:
 			EveryStep[x][y] = WhiteStep--;
 		}
 	}
-	//Èç¹ûÔÚx,yÏÂ×Ó½«»áĞÎ³É¡­¡­·µ»ØÖµÕıÊıÎª»î£¬¸ºÊıÎªÃß£¬Ê®Î»Îª·½Ïò
-	//Àı£º13£¬×óÉÏµ½ÓÒÏÂĞÎ³ÉÁË»îÁ¬Èı
-	//Àı£º-35£¬ÓÒÉÏµ½×óÏÂĞÎ³ÉÁËÃßÁ¬Îå
+	//å¦‚æœåœ¨x,yä¸‹å­å°†ä¼šå½¢æˆâ€¦â€¦è¿”å›å€¼æ­£æ•°ä¸ºæ´»ï¼Œè´Ÿæ•°ä¸ºçœ ï¼Œåä½ä¸ºæ–¹å‘
+	//ä¾‹ï¼š13ï¼Œå·¦ä¸Šåˆ°å³ä¸‹å½¢æˆäº†æ´»è¿ä¸‰
+	//ä¾‹ï¼š-35ï¼Œå³ä¸Šåˆ°å·¦ä¸‹å½¢æˆäº†çœ è¿äº”
 	int if_(int color, int x, int y) {
 		int sum = 1;
 		int sleep = 1;
-		//1£¬×óÉÏµ½ÓÒÏÂ
+		//1ï¼Œå·¦ä¸Šåˆ°å³ä¸‹
 		for (int i = 1; i <= 6; i++) {
 			if (x + i >= 0 && y + i >= 0 && x + i < 19 && y + i < 19) {
 				if (Board[x + i][y + i] == color) {
@@ -152,7 +152,7 @@ public:
 		}
 		return sum * sleep;
 	}
-	//·µ»Øx,yÕâ¸öµãlayers²ãÄÚÓĞ¶àÉÙcolorµÄ×Ó
+	//è¿”å›x,yè¿™ä¸ªç‚¹layerså±‚å†…æœ‰å¤šå°‘colorçš„å­
 	int howManyPiece(int color, int x, int y, int layers = 2) {
 		int sum = 0;
 		for (int i = (-1 * layers); i < (layers + 1); i++) {
@@ -168,7 +168,7 @@ public:
 	}
 };
 Tool tool;
-//Êä³ö¼º·½½á¹û£¬x¡¢yÊÇ×ø±ê£¬stepÊÇÕâ¾ÖÓÎÏ·µÄµÚ1²½»¹ÊÇµÚ2²½
+//è¾“å‡ºå·±æ–¹ç»“æœï¼Œxã€yæ˜¯åæ ‡ï¼Œstepæ˜¯è¿™å±€æ¸¸æˆçš„ç¬¬1æ­¥è¿˜æ˜¯ç¬¬2æ­¥
 void move(int x, int y, int step) {
 	Board[x][y] = computerSide;
 	if (step == 1) {
@@ -198,11 +198,11 @@ void move(Step step) {
 }
 
 /*Score.h*/
-//ĞÎ³É/·ÀÖ¹{»îËÄ£¬ÃßËÄ£¬»îÎå£¬ÃßÎå}Ë«×éºÏ
-//²ÎÊı£ºX,Y,¼º·½µÚÒ»²½ĞÎ³É»îËÄ¸³ÖµX=1
-//¶Ô·½µÚÒ»²½ĞÎ³É»îËÄ¸³ÖµY=1
-//µÚ¶ş²½¼º·½ĞÎ³ÉÃßËÄ/ÃßÎåÇÒX==1£¬¸ÃÆåĞÎµÃ·Ö½ö±ÈÁùÁ¬µÍ
-//µÚ¶ş²½¶Ô·½ĞÎ³ÉÃßËÄ/ÃßÎåÇÒY==1£¬¸ÃÆåĞÎµÃ·Ö½ö±ÈÁùÁ¬/»îÎå/»îËÄµÍ
+//å½¢æˆ/é˜²æ­¢{æ´»å››ï¼Œçœ å››ï¼Œæ´»äº”ï¼Œçœ äº”}åŒç»„åˆ
+//å‚æ•°ï¼šX,Y,å·±æ–¹ç¬¬ä¸€æ­¥å½¢æˆæ´»å››èµ‹å€¼X=1
+//å¯¹æ–¹ç¬¬ä¸€æ­¥å½¢æˆæ´»å››èµ‹å€¼Y=1
+//ç¬¬äºŒæ­¥å·±æ–¹å½¢æˆçœ å››/çœ äº”ä¸”X==1ï¼Œè¯¥æ£‹å½¢å¾—åˆ†ä»…æ¯”å…­è¿ä½
+//ç¬¬äºŒæ­¥å¯¹æ–¹å½¢æˆçœ å››/çœ äº”ä¸”Y==1ï¼Œè¯¥æ£‹å½¢å¾—åˆ†ä»…æ¯”å…­è¿/æ´»äº”/æ´»å››ä½
 class Chess {
 public:
 	Point me;
@@ -225,14 +225,14 @@ public:
 		score = a.score;
 	}
 }transcript[19][19];
-//´ò·Ö±È¶Ô±í£¬ÓÃÀ´±È¶ÔÆåĞÎ£¬·µ»Ø¸ÃÆåĞÎµÃ·Ö
+//æ‰“åˆ†æ¯”å¯¹è¡¨ï¼Œç”¨æ¥æ¯”å¯¹æ£‹å½¢ï¼Œè¿”å›è¯¥æ£‹å½¢å¾—åˆ†
 int score_table(int size, std::string a, bool isme, int step) {
-	//½«aµ¹ÖÃ¸³Öµ¸øb¡£
+	//å°†aå€’ç½®èµ‹å€¼ç»™bã€‚
 	std::string b(a);
 	for (int i = 0; i < size; i++) {
 		b[size - i - 1] = a[i];
 	}
-	//½«aµ¹ÖÃ¸³Öµ¸øb¡£
+	//å°†aå€’ç½®èµ‹å€¼ç»™bã€‚
 	if (size == 6) {
 		if (a == "111111" || b == "111111") { if (isme && step == 1) return 10000; if (isme && step == 2)return 10000; if (!isme && step == 1) return 7000; if (!isme && step == 2)return 7000; }
 		if (a == "111112" || b == "111112") { if (isme && step == 1) return 7800;  if (isme && step == 2)return 2000; if (!isme && step == 1) return 6300; if (!isme && step == 2)return 6300; }
@@ -349,7 +349,7 @@ int score_table(int size, std::string a, bool isme, int step) {
 	}
 	return 0;
 }
-//ÓÃÀ´Ìô³öÒ»¸öµãÖÜÎ§µÃ·Ö×î´óµÄÆåĞÎµÄµÃ·Ö
+//ç”¨æ¥æŒ‘å‡ºä¸€ä¸ªç‚¹å‘¨å›´å¾—åˆ†æœ€å¤§çš„æ£‹å½¢çš„å¾—åˆ†
 int get_max(int a[], int size) {
 	int temp = a[0];
 	for (int i = 1; i < size; i++) {
@@ -358,7 +358,7 @@ int get_max(int a[], int size) {
 	}
 	return temp;
 }
-//ÓÃÓÚÌáÈ¡ÆåĞÎ£¬¸ÃÆåĞÎÊÇ¼ì²âµãÒÑ¾­Ìî³äÉÏ¶ÔÓ¦colourµÄÇé¿ö
+//ç”¨äºæå–æ£‹å½¢ï¼Œè¯¥æ£‹å½¢æ˜¯æ£€æµ‹ç‚¹å·²ç»å¡«å……ä¸Šå¯¹åº”colourçš„æƒ…å†µ
 int calculate_score_step_1(Point p, int colour, int score_) {
 	std::string a = "2222222";
 	int left_size = 0;
@@ -366,52 +366,52 @@ int calculate_score_step_1(Point p, int colour, int score_) {
 	int size = 0;
 	int score[7] = { 0 ,0,0,0,0,0,0 };
 	int score1 = 0, score2 = 0, score3 = 0, score4 = 0;
-	//ºá
-	for (int i = 1; i < 8; i++) {//¸ÃµãÊÇ¸ÃÄ£ĞÍµÄµÚiÎ»£¬×î´óÊÇµÚ7Î»
+	//æ¨ª
+	for (int i = 1; i < 8; i++) {//è¯¥ç‚¹æ˜¯è¯¥æ¨¡å‹çš„ç¬¬iä½ï¼Œæœ€å¤§æ˜¯ç¬¬7ä½
 		left_size = 0, right_size = 0, size = 0;
 		a[i - 1] = colour + '0';
-		for (int j = 1; j < i; j++) {//jÊÇ´Ói¿ªÊ¼Ïò×ó¼ìË÷µÄÎ»Êı
-			if (p.y - j < 0)//Ô½½ç
+		for (int j = 1; j < i; j++) {//jæ˜¯ä»iå¼€å§‹å‘å·¦æ£€ç´¢çš„ä½æ•°
+			if (p.y - j < 0)//è¶Šç•Œ
 				break;
-			if (Board[p.x][p.y - j] == 1 - colour)//±»¶Â×¡
+			if (Board[p.x][p.y - j] == 1 - colour)//è¢«å µä½
 				break;
 			a[i - 1 - j] = Board[p.x][p.y - j] + '0';
 			left_size++;
 		}
-		for (int j = 1; j < 8 - i; j++) {//ÏòÓÒ¼ìË÷
-			if (p.y + j > 18)//Ô½½ç
+		for (int j = 1; j < 8 - i; j++) {//å‘å³æ£€ç´¢
+			if (p.y + j > 18)//è¶Šç•Œ
 				break;
 			if (Board[p.x][p.y + j] == 1 - colour)
 				break;
 			a[i - 1 + j] = Board[p.x][p.y + j] + '0';
 			right_size++;
 		}
-		std::string temp(a, i - left_size - 1, left_size + right_size + 1);//½ØÈ¡ÓĞĞ§²¿·Ö
+		std::string temp(a, i - left_size - 1, left_size + right_size + 1);//æˆªå–æœ‰æ•ˆéƒ¨åˆ†
 		size = temp.size();
-		if (colour == BLACK) {//Èç¹ûÊÇ0£¬½«0×ª»»Îª1£¬·½±ã±È¶Ô¡£
+		if (colour == BLACK) {//å¦‚æœæ˜¯0ï¼Œå°†0è½¬æ¢ä¸º1ï¼Œæ–¹ä¾¿æ¯”å¯¹ã€‚
 			for (int k = 0; k < size; k++) {
 				if (temp[k] == '0')
 					temp[k] = '1';
 			}
 		}
-		score[i - 1] = score_table(size, temp, computerSide == colour, whichStep);//µÃµ½ÆåĞÎµÃ·Ö£¬´æÈëµÃ·ÖÊı×é
+		score[i - 1] = score_table(size, temp, computerSide == colour, whichStep);//å¾—åˆ°æ£‹å½¢å¾—åˆ†ï¼Œå­˜å…¥å¾—åˆ†æ•°ç»„
 	}
-	score1 = get_max(score, 7);//Ä¬ÈÏÃ¿¸öÄ£ĞÍ¶¼ÓĞ´ò·Ö
-/*¿¼ÂÇÆåĞÎ²»Æ¥ÅäµÄµÃ·ÖÇé¿ö£¬ÄÇÃ´Ó¦¸ÃÔÚÃ¿´Î»»·½ÏòÊ±½«µÃ·ÖÊı×é³õÊ¼»¯0*/
-	//Êú
-	for (int i = 1; i < 8; i++) {//ÊÇ¸ÃÄ£ĞÍµÄµÚiÎ»
+	score1 = get_max(score, 7);//é»˜è®¤æ¯ä¸ªæ¨¡å‹éƒ½æœ‰æ‰“åˆ†
+/*è€ƒè™‘æ£‹å½¢ä¸åŒ¹é…çš„å¾—åˆ†æƒ…å†µï¼Œé‚£ä¹ˆåº”è¯¥åœ¨æ¯æ¬¡æ¢æ–¹å‘æ—¶å°†å¾—åˆ†æ•°ç»„åˆå§‹åŒ–0*/
+	//ç«–
+	for (int i = 1; i < 8; i++) {//æ˜¯è¯¥æ¨¡å‹çš„ç¬¬iä½
 		left_size = 0, right_size = 0, size = 0;
 		a[i - 1] = colour + '0';
-		for (int j = 1; j < i; j++) {//jÊÇ´Ói¿ªÊ¼ÏòÉÏ¼ìË÷µÄÎ»Êı
-			if (p.x - j < 0)//Ô½½ç
+		for (int j = 1; j < i; j++) {//jæ˜¯ä»iå¼€å§‹å‘ä¸Šæ£€ç´¢çš„ä½æ•°
+			if (p.x - j < 0)//è¶Šç•Œ
 				break;
 			if (Board[p.x - j][p.y] == 1 - colour)
 				break;
 			a[i - 1 - j] = Board[p.x - j][p.y] + '0';
 			left_size++;
 		}
-		for (int j = 1; j < 8 - i; j++) {//ÏòÏÂ¼ìË÷
-			if (p.x + j > 18)//Ô½½ç
+		for (int j = 1; j < 8 - i; j++) {//å‘ä¸‹æ£€ç´¢
+			if (p.x + j > 18)//è¶Šç•Œ
 				break;
 			if (Board[p.x + j][p.y] == 1 - colour)
 				break;
@@ -420,7 +420,7 @@ int calculate_score_step_1(Point p, int colour, int score_) {
 		}
 		std::string temp(a, i - left_size - 1, left_size + right_size + 1);
 		size = temp.size();
-		if (colour == BLACK) {//½«0×ª»»Îª1£¬·½±ã±È¶Ô¡£
+		if (colour == BLACK) {//å°†0è½¬æ¢ä¸º1ï¼Œæ–¹ä¾¿æ¯”å¯¹ã€‚
 			for (int k = 0; k < size; k++) {
 				if (temp[k] == '0')
 					temp[k] = '1';
@@ -429,20 +429,20 @@ int calculate_score_step_1(Point p, int colour, int score_) {
 		score[i - 1] = score_table(size, temp, computerSide == colour, whichStep);
 	}
 	score2 = get_max(score, 7);
-	//Æ²
-	for (int i = 1; i < 8; i++) {//ÊÇ¸ÃÄ£ĞÍµÄµÚiÎ»
+	//æ’‡
+	for (int i = 1; i < 8; i++) {//æ˜¯è¯¥æ¨¡å‹çš„ç¬¬iä½
 		left_size = 0, right_size = 0, size = 0;
 		a[i - 1] = colour + '0';
-		for (int j = 1; j < i; j++) {//jÊÇ´Ói¿ªÊ¼Ïò×óÏÂ¼ìË÷µÄÎ»Êı
-			if (p.y - j < 0 || p.x + j> 18)//Ô½½ç
+		for (int j = 1; j < i; j++) {//jæ˜¯ä»iå¼€å§‹å‘å·¦ä¸‹æ£€ç´¢çš„ä½æ•°
+			if (p.y - j < 0 || p.x + j> 18)//è¶Šç•Œ
 				break;
 			if (Board[p.x + j][p.y - j] == 1 - colour)
 				break;
 			a[i - 1 - j] = Board[p.x + j][p.y - j] + '0';
 			left_size++;
 		}
-		for (int j = 1; j < 8 - i; j++) {//ÏòÓÒÉÏ¼ìË÷
-			if (p.y + j > 18 || p.x - j < 0)//Ô½½ç
+		for (int j = 1; j < 8 - i; j++) {//å‘å³ä¸Šæ£€ç´¢
+			if (p.y + j > 18 || p.x - j < 0)//è¶Šç•Œ
 				break;
 			if (Board[p.x - j][p.y + j] == 1 - colour)
 				break;
@@ -451,7 +451,7 @@ int calculate_score_step_1(Point p, int colour, int score_) {
 		}
 		std::string temp(a, i - left_size - 1, left_size + right_size + 1);
 		size = temp.size();
-		if (colour == BLACK) {//½«0×ª»»Îª1£¬·½±ã±È¶Ô¡£
+		if (colour == BLACK) {//å°†0è½¬æ¢ä¸º1ï¼Œæ–¹ä¾¿æ¯”å¯¹ã€‚
 			for (int k = 0; k < size; k++) {
 				if (temp[k] == '0')
 					temp[k] = '1';
@@ -460,20 +460,20 @@ int calculate_score_step_1(Point p, int colour, int score_) {
 		score[i - 1] = score_table(size, temp, computerSide == colour, whichStep);
 	}
 	score3 = get_max(score, 7);
-	//Şà
-	for (int i = 1; i < 8; i++) {//ÊÇ¸ÃÄ£ĞÍµÄµÚiÎ»
+	//æº
+	for (int i = 1; i < 8; i++) {//æ˜¯è¯¥æ¨¡å‹çš„ç¬¬iä½
 		left_size = 0, right_size = 0, size = 0;
 		a[i - 1] = colour + '0';
-		for (int j = 1; j < i; j++) {//jÊÇ´Ói¿ªÊ¼Ïò×óÉÏ¼ìË÷µÄÎ»Êı
-			if (p.y - j < 0 || p.x - j < 0)//Ô½½ç
+		for (int j = 1; j < i; j++) {//jæ˜¯ä»iå¼€å§‹å‘å·¦ä¸Šæ£€ç´¢çš„ä½æ•°
+			if (p.y - j < 0 || p.x - j < 0)//è¶Šç•Œ
 				break;
 			if (Board[p.x - j][p.y - j] == 1 - colour)
 				break;
 			a[i - 1 - j] = Board[p.x - j][p.y - j] + '0';
 			left_size++;
 		}
-		for (int j = 1; j < 8 - i; j++) {//ÏòÓÒÏÂ¼ìË÷
-			if (p.y + j > 18 || p.x + j > 18)//Ô½½ç
+		for (int j = 1; j < 8 - i; j++) {//å‘å³ä¸‹æ£€ç´¢
+			if (p.y + j > 18 || p.x + j > 18)//è¶Šç•Œ
 				break;
 			if (Board[p.x + j][p.y + j] == 1 - colour)
 				break;
@@ -482,7 +482,7 @@ int calculate_score_step_1(Point p, int colour, int score_) {
 		}
 		std::string temp(a, i - left_size - 1, left_size + right_size + 1);
 		size = temp.size();
-		if (colour == BLACK) {//½«0×ª»»Îª1£¬·½±ã±È¶Ô¡£
+		if (colour == BLACK) {//å°†0è½¬æ¢ä¸º1ï¼Œæ–¹ä¾¿æ¯”å¯¹ã€‚
 			for (int k = 0; k < size; k++) {
 				if (temp[k] == '0')
 					temp[k] = '1';
@@ -493,24 +493,24 @@ int calculate_score_step_1(Point p, int colour, int score_) {
 	score4 = get_max(score, 7);
 	return score1 + score2 + score3 + score4;
 }
-//ÓÃÓÚ¼ÆËã¸Ãµã×ÜµÃ·Ö
+//ç”¨äºè®¡ç®—è¯¥ç‚¹æ€»å¾—åˆ†
 int calculate_score_step_2(Point p) {
-	int score_x = 0, score_y = 0, score_z = 0;//x:½ö¿¼ÂÇ¼º·½µÃ·Ö£¬y:¸Ãµã¶Ô·½ÏÂÊ±½ö¿¼ÂÇ¶Ô·½µÃ·Ö£¬z:¸Ãµã¼º·½ÏÂÊ±½ö¿¼ÂÇ¶Ô·½µÃ·Ö
-	int X = 0, Y = 0;//ÓÃÓÚ±ê¼Ç{»îËÄ£¬ÃßËÄ£¬»îÎå£¬ÃßÎå}Ë«×éºÏ
+	int score_x = 0, score_y = 0, score_z = 0;//x:ä»…è€ƒè™‘å·±æ–¹å¾—åˆ†ï¼Œy:è¯¥ç‚¹å¯¹æ–¹ä¸‹æ—¶ä»…è€ƒè™‘å¯¹æ–¹å¾—åˆ†ï¼Œz:è¯¥ç‚¹å·±æ–¹ä¸‹æ—¶ä»…è€ƒè™‘å¯¹æ–¹å¾—åˆ†
+	int X = 0, Y = 0;//ç”¨äºæ ‡è®°{æ´»å››ï¼Œçœ å››ï¼Œæ´»äº”ï¼Œçœ äº”}åŒç»„åˆ
 	score_x = calculate_score_step_1(p, computerSide, score_x);
 	score_y = calculate_score_step_1(p, 1 - computerSide, score_y);
 	return score_x > score_y ? score_x : score_y;
 }
-//¹¦ÄÜº¯Êı£¬µ÷ÓÃÒÔÉÏº¯ÊıµÃµ½×î´óµÃ·Öµã£¬·µ»Ø¡£
+//åŠŸèƒ½å‡½æ•°ï¼Œè°ƒç”¨ä»¥ä¸Šå‡½æ•°å¾—åˆ°æœ€å¤§å¾—åˆ†ç‚¹ï¼Œè¿”å›ã€‚
 Point Choose_Point() {
 	Chess temp;
-	//¸ù¾İBoard³õÊ¼»¯¸±±¾Àà
+	//æ ¹æ®Boardåˆå§‹åŒ–å‰¯æœ¬ç±»
 	for (int i = 0; i < 19; i++) {
 		for (int j = 0; j < 19; j++) {
 			transcript[i][j].set(i, j, Board[i][j]);
 		}
 	}
-	//¼ÆËãÃ¿¸ö¿ÕµÄµÃ·Ö
+	//è®¡ç®—æ¯ä¸ªç©ºçš„å¾—åˆ†
 	for (int i = 0; i < 19; i++) {
 		for (int j = 0; j < 19; j++) {
 			if (Board[i][j] == 2) {
@@ -518,7 +518,7 @@ Point Choose_Point() {
 			}
 		}
 	}
-	//µÃµ½×î´óµÃ·Öµã£¬·µ»Ø
+	//å¾—åˆ°æœ€å¤§å¾—åˆ†ç‚¹ï¼Œè¿”å›
 	for (int i = 0; i < 19; i++) {
 		for (int j = 0; j < 19; j++) {
 			if (temp.get_score() < transcript[i][j].get_score())
@@ -533,15 +533,15 @@ int main() {
 	while (true) {
 		fflush(stdout);
 		std::cin >> Message;
-		//·ÖÎöÃüÁî
-		//·¢ËÍ¶ÓÃû
+		//åˆ†æå‘½ä»¤
+		//å‘é€é˜Ÿå
 		if (Message.compare("name?") == 0) {
 			fflush(stdin);
-			std::cout << "name Alpha·ğ" << std::endl;
+			std::cout << "name Alphaä½›" << std::endl;
 		}
-		//ĞÂµÄÒ»´Î
+		//æ–°çš„ä¸€æ¬¡
 		else if (Message.compare("new") == 0) {
-			std::cin >> Message;//»ñÈ¡¼º·½ÑÕÉ«
+			std::cin >> Message;//è·å–å·±æ–¹é¢œè‰²
 			fflush(stdin);
 			if (Message.compare("black") == 0) {
 				computerSide = BLACK;
@@ -555,18 +555,18 @@ int main() {
 			if (computerSide == BLACK) {
 				step.first.x = 9;
 				step.first.y = 9;
-				Board[step.first.x][step.first.y] = computerSide;//´¦Àí¼º·½ĞĞÆå
+				Board[step.first.x][step.first.y] = computerSide;//å¤„ç†å·±æ–¹è¡Œæ£‹
 				move(step.first.x, step.first.y, 3);
 			}
 		}
-		//ÏÂÆå
+		//ä¸‹æ£‹
 		else if (Message.compare("move") == 0) {
 			std::cin >> Message;
 			fflush(stdin);
 			move(Message);
 			switch (tool.whichGame())
 			{
-				//Èç¹ûÎÒÃÇÊÇ°×·½£¬ÏÂµÚÒ»´Î
+				//å¦‚æœæˆ‘ä»¬æ˜¯ç™½æ–¹ï¼Œä¸‹ç¬¬ä¸€æ¬¡
 			case 1: {
 				if (computerSide == WHITE) {
 					int FirstStepOfBLACK = tool.locOfChess(BLACK, 1);
@@ -604,7 +604,7 @@ int main() {
 				}
 				break;
 			}
-				//Èç¹ûÎÒÃÇÊÇºÚ·½£¬ÏÂµÚ¶ş´Î
+				//å¦‚æœæˆ‘ä»¬æ˜¯é»‘æ–¹ï¼Œä¸‹ç¬¬äºŒæ¬¡
 			case 2: {
 				if (computerSide == BLACK) {
 					int temp = tool.locOfChess(BLACK, 1);
@@ -619,10 +619,10 @@ int main() {
 					Point SecondStepOfWHITE;
 					SecondStepOfWHITE.x = temp / 100;
 					SecondStepOfWHITE.y = temp % 100;
-					//¿ªÊ¼ÁË¡­¡­
+					//å¼€å§‹äº†â€¦â€¦
 					if (Board[FirstStepOfBLACK.x + 1][FirstStepOfBLACK.y + 1] == EMPTY && Board[FirstStepOfBLACK.x - 1][FirstStepOfBLACK.y - 1] == EMPTY) {
 						if (tool.if_(1 - computerSide, FirstStepOfBLACK.x + 2, FirstStepOfBLACK.y + 2) == 3 || tool.if_(1 - computerSide, FirstStepOfBLACK.x - 2, FirstStepOfBLACK.y - 2) == 3) {
-							//ÁíÍâÏë°ì·¨°É¡­¡­
+							//å¦å¤–æƒ³åŠæ³•å§â€¦â€¦
 						}
 						else {
 							step.first.x = FirstStepOfBLACK.x + 1;
@@ -634,7 +634,7 @@ int main() {
 					}
 					if (Board[FirstStepOfBLACK.x + 1][FirstStepOfBLACK.y - 1] == EMPTY && Board[FirstStepOfBLACK.x - 1][FirstStepOfBLACK.y + 1] == EMPTY) {
 						if (tool.if_(1 - computerSide, FirstStepOfBLACK.x + 2, FirstStepOfBLACK.y - 2) == 3 || tool.if_(1 - computerSide, FirstStepOfBLACK.x - 2, FirstStepOfBLACK.y + 2) == 3) {
-							//ÁíÍâÏë°ì·¨°É¡­¡­
+							//å¦å¤–æƒ³åŠæ³•å§â€¦â€¦
 						}
 						else {
 							step.first.x = FirstStepOfBLACK.x + 1;
@@ -646,7 +646,7 @@ int main() {
 					}
 					if (Board[FirstStepOfBLACK.x + 1][FirstStepOfBLACK.y + 1] == EMPTY && Board[FirstStepOfBLACK.x + 2][FirstStepOfBLACK.y + 2] == EMPTY) {
 						if (tool.if_(1 - computerSide, FirstStepOfBLACK.x + 3, FirstStepOfBLACK.y + 3) == 3 || tool.if_(1 - computerSide, FirstStepOfBLACK.x - 1, FirstStepOfBLACK.y - 1) == 3) {
-							//ÁíÍâÏë°ì·¨°É¡­¡­
+							//å¦å¤–æƒ³åŠæ³•å§â€¦â€¦
 						}
 						else {
 							step.first.x = FirstStepOfBLACK.x + 1;
@@ -658,7 +658,7 @@ int main() {
 					}
 					if (Board[FirstStepOfBLACK.x - 1][FirstStepOfBLACK.y - 1] == EMPTY && Board[FirstStepOfBLACK.x - 2][FirstStepOfBLACK.y - 2] == EMPTY) {
 						if (tool.if_(1 - computerSide, FirstStepOfBLACK.x - 3, FirstStepOfBLACK.y - 3) == 3 || tool.if_(1 - computerSide, FirstStepOfBLACK.x + 1, FirstStepOfBLACK.y + 1) == 3) {
-							//ÁíÍâÏë°ì·¨°É¡­¡­
+							//å¦å¤–æƒ³åŠæ³•å§â€¦â€¦
 						}
 						else {
 							step.first.x = FirstStepOfBLACK.x - 1;
@@ -670,7 +670,7 @@ int main() {
 					}
 					if (Board[FirstStepOfBLACK.x + 1][FirstStepOfBLACK.y - 1] == EMPTY && Board[FirstStepOfBLACK.x + 2][FirstStepOfBLACK.y - 2] == EMPTY) {
 						if (tool.if_(1 - computerSide, FirstStepOfBLACK.x + 3, FirstStepOfBLACK.y - 3) == 3 || tool.if_(1 - computerSide, FirstStepOfBLACK.x - 1, FirstStepOfBLACK.y + 1) == 3) {
-							//ÁíÍâÏë°ì·¨°É¡­¡­
+							//å¦å¤–æƒ³åŠæ³•å§â€¦â€¦
 						}
 						else {
 							step.first.x = FirstStepOfBLACK.x + 1;
@@ -682,7 +682,7 @@ int main() {
 					}
 					if (Board[FirstStepOfBLACK.x - 1][FirstStepOfBLACK.y + 1] == EMPTY && Board[FirstStepOfBLACK.x - 2][FirstStepOfBLACK.y + 2] == EMPTY) {
 						if (tool.if_(1 - computerSide, FirstStepOfBLACK.x - 3, FirstStepOfBLACK.y + 3) == 3 || tool.if_(1 - computerSide, FirstStepOfBLACK.x + 1, FirstStepOfBLACK.y - 1) == 3) {
-							//ÁíÍâÏë°ì·¨°É¡­¡­
+							//å¦å¤–æƒ³åŠæ³•å§â€¦â€¦
 						}
 						else {
 							step.first.x = FirstStepOfBLACK.x - 1;
@@ -692,7 +692,7 @@ int main() {
 							break;
 						}
 					}
-					//·ÅÆúÁË
+					//æ”¾å¼ƒäº†
 				}
 				break;
 			}
@@ -713,7 +713,7 @@ int main() {
 				break;
 			}
 			}
-			//³öÏÖ´íÎó£¬ÏÂÔÚÁË·Ç¿Õ°×µÄµØ·½
+			//å‡ºç°é”™è¯¯ï¼Œä¸‹åœ¨äº†éç©ºç™½çš„åœ°æ–¹
 			if (step.first.x < 0 || step.first.x>18 || step.first.y < 0 || step.first.y > 18) {
 				int Max = 0;
 				int temp = 0;
@@ -794,16 +794,16 @@ int main() {
 				move(step);
 			}
 		}
-		//ÏÂÆå´íÎó
+		//ä¸‹æ£‹é”™è¯¯
 		else if (Message.compare("error") == 0) {
 			fflush(stdin);
 		}
-		//½áÊøÓÎÏ·
+		//ç»“æŸæ¸¸æˆ
 		else if (Message.compare("end") == 0) {
 			fflush(stdin);
 			start = false;
 		}
-		//ÍË³ö³ÌĞò
+		//é€€å‡ºç¨‹åº
 		else if (Message.compare("quit") == 0) {
 			fflush(stdin);
 			std::cout << "Quit!" << std::endl;
@@ -812,15 +812,15 @@ int main() {
 		//hello
 		else if (Message.compare("hello") == 0 || Message.compare("Hello") == 0) {
 			fflush(stdin);
-			std::cout << "Hi";
+			std::cout << "Hi" << std::endl;
 		}
 		else if (Message.compare("hi") == 0 || Message.compare("Hi") == 0) {
 			fflush(stdin);
-			std::cout << "Hey";
+			std::cout << "Hey" << std::endl;
 		}
 		else if (Message.compare("hey") == 0 || Message.compare("Hey") == 0) {
 			fflush(stdin);
-			std::cout << "Hello";
+			std::cout << "Hello" << std::endl;
 		}
 	}
 	return 0;
